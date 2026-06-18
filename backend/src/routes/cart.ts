@@ -1,11 +1,11 @@
-import { Router, Response } from 'express';
+import { Router, Response, NextFunction } from 'express';
 import { PrismaClient } from '@prisma/client';
 import { authenticate, AuthRequest } from '../middleware/auth';
 
 const router = Router();
 const prisma = new PrismaClient();
 
-router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
+router.get('/', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     let cart = await prisma.cart.findUnique({
       where: { userId: req.userId },
@@ -24,11 +24,11 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
 
     res.json(cart);
   } catch (error: any) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 });
 
-router.post('/add', authenticate, async (req: AuthRequest, res: Response) => {
+router.post('/add', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const { productId, quantity = 1 } = req.body;
     const userId = req.userId;
@@ -82,11 +82,11 @@ router.post('/add', authenticate, async (req: AuthRequest, res: Response) => {
 
     res.json(updatedCart);
   } catch (error: any) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 });
 
-router.put('/item/:itemId', authenticate, async (req: AuthRequest, res: Response) => {
+router.put('/item/:itemId', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const { itemId } = req.params;
     const { quantity } = req.body;
@@ -101,11 +101,11 @@ router.put('/item/:itemId', authenticate, async (req: AuthRequest, res: Response
 
     res.json(item);
   } catch (error: any) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 });
 
-router.delete('/item/:itemId', authenticate, async (req: AuthRequest, res: Response) => {
+router.delete('/item/:itemId', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const { itemId } = req.params;
 
@@ -115,11 +115,11 @@ router.delete('/item/:itemId', authenticate, async (req: AuthRequest, res: Respo
 
     res.json({ message: 'Item removed' });
   } catch (error: any) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 });
 
-router.delete('/clear', authenticate, async (req: AuthRequest, res: Response) => {
+router.delete('/clear', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const cart = await prisma.cart.findUnique({
       where: { userId: req.userId }
@@ -133,7 +133,7 @@ router.delete('/clear', authenticate, async (req: AuthRequest, res: Response) =>
 
     res.json({ message: 'Cart cleared' });
   } catch (error: any) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 });
 
