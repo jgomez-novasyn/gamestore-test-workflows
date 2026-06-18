@@ -1,5 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
+import { AppError } from './utils/errors';
 import authRoutes from './routes/auth';
 import productRoutes from './routes/products';
 import cartRoutes from './routes/cart';
@@ -20,6 +21,9 @@ app.use('/api/admin', adminRoutes);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack);
+  if (err instanceof AppError) {
+    return res.status(err.statusCode).json({ error: err.message });
+  }
   res.status(500).json({ error: 'Something went wrong!' });
 });
 

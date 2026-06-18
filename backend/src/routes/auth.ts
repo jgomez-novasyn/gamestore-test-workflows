@@ -1,17 +1,18 @@
-import { Router, Response } from 'express';
+import { Router, Response, NextFunction } from 'express';
 import { PrismaClient } from '@prisma/client';
 import { generateToken, generateRefreshToken, verifyRefreshToken, AuthRequest, authenticate } from '../middleware/auth';
+import { AuthError, NotFoundError, ValidationError } from '../utils/errors';
 
 const router = Router();
 const prisma = new PrismaClient();
 
-router.post('/register', async (req, res) => {
+router.post('/register', async (req, res, next: NextFunction) => {
   try {
     const { email, password, name } = req.body;
 
     const existingUser = await prisma.user.findUnique({ where: { email } });
     if (existingUser) {
-      return res.status(400).json({ error: 'Email already exists' });
+      throw new ValidationError('Email already exists');
     }
 
     // BUG: Password stored in plain text
@@ -34,11 +35,11 @@ router.post('/register', async (req, res) => {
 
     res.json({ token, refreshToken, user: { id: user.id, email: user.email, name: user.name, role: user.role } });
   } catch (error: any) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 });
 
-router.post('/login', async (req, res) => {
+router.post('/login', async (req, res, next: NextFunction) => {
   try {
     const { email, password } = req.body;
 
@@ -48,7 +49,7 @@ router.post('/login', async (req, res) => {
     });
 
     if (!user) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+      throw new AuthError('Invalid credentials');
     }
 
     const token = generateToken(user.id, user.role);
@@ -61,16 +62,16 @@ router.post('/login', async (req, res) => {
 
     res.json({ token, refreshToken, user: { id: user.id, email: user.email, name: user.name, role: user.role } });
   } catch (error: any) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 });
 
-router.post('/refresh', async (req, res) => {
+router.post('/refresh', async (req, res, next: NextFunction) => {
   try {
     const { refreshToken } = req.body;
 
     if (!refreshToken) {
-      return res.status(400).json({ error: 'Refresh token required' });
+      throw new ValidationError('Refresh token required');
     }
 
     const decoded = verifyRefreshToken(refreshToken);
@@ -80,7 +81,7 @@ router.post('/refresh', async (req, res) => {
     });
 
     if (!user || user.refreshToken !== refreshToken) {
-      return res.status(401).json({ error: 'Invalid refresh token' });
+      throw new AuthError('Invalid refresh token');
     }
 
     // BUG: Refresh token is not renewed, returning the same token
@@ -89,11 +90,11 @@ router.post('/refresh', async (req, res) => {
     
     res.json({ token, refreshToken }); // BUG: Returning same refresh token instead of new one
   } catch (error: any) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 });
 
-router.post('/logout', authenticate, async (req: AuthRequest, res: Response) => {
+router.post('/logout', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     await prisma.user.update({
       where: { id: req.userId },
@@ -102,11 +103,11 @@ router.post('/logout', authenticate, async (req: AuthRequest, res: Response) => 
 
     res.json({ message: 'Logged out successfully' });
   } catch (error: any) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 });
 
-router.get('/me', authenticate, async (req: AuthRequest, res: Response) => {
+router.get('/me', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const user = await prisma.user.findUnique({
       where: { id: req.userId },
@@ -114,12 +115,12 @@ router.get('/me', authenticate, async (req: AuthRequest, res: Response) => {
     });
 
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+      throw new NotFoundError('User not found');
     }
 
     res.json(user);
   } catch (error: any) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 });
 

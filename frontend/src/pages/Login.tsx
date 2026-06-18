@@ -2,9 +2,23 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const validate = (email: string, password: string) => {
+  const errors: { email?: string; password?: string } = {};
+  if (!EMAIL_REGEX.test(email)) {
+    errors.email = 'Please enter a valid email address';
+  }
+  if (!password) {
+    errors.password = 'Password is required';
+  }
+  return errors;
+};
+
 export const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [fieldErrors, setFieldErrors] = useState<{ email?: string; password?: string }>({});
   const [error, setError] = useState('');
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -12,6 +26,9 @@ export const Login = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    const errors = validate(email, password);
+    setFieldErrors(errors);
+    if (Object.keys(errors).length > 0) return;
     try {
       await login(email, password);
       navigate('/products');
@@ -31,20 +48,20 @@ export const Login = () => {
             <input
               type="email"
               value={email}
-              onChange={e => setEmail(e.target.value)}
-              className="w-full p-2 border rounded"
-              required
+              onChange={e => { setEmail(e.target.value); setFieldErrors(prev => ({ ...prev, email: undefined })); }}
+              className={`w-full p-2 border rounded ${fieldErrors.email ? 'border-red-500' : ''}`}
             />
+            {fieldErrors.email && <p className="text-red-600 text-sm mt-1">{fieldErrors.email}</p>}
           </div>
           <div className="mb-6">
             <label className="block text-sm font-medium mb-1">Password</label>
             <input
               type="password"
               value={password}
-              onChange={e => setPassword(e.target.value)}
-              className="w-full p-2 border rounded"
-              required
+              onChange={e => { setPassword(e.target.value); setFieldErrors(prev => ({ ...prev, password: undefined })); }}
+              className={`w-full p-2 border rounded ${fieldErrors.password ? 'border-red-500' : ''}`}
             />
+            {fieldErrors.password && <p className="text-red-600 text-sm mt-1">{fieldErrors.password}</p>}
           </div>
           <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">
             Login

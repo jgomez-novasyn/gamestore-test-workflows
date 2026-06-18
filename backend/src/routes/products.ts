@@ -1,11 +1,12 @@
-import { Router, Response } from 'express';
+import { Router, Response, NextFunction } from 'express';
 import { PrismaClient } from '@prisma/client';
 import { authenticate, AuthRequest } from '../middleware/auth';
+import { NotFoundError } from '../utils/errors';
 
 const router = Router();
 const prisma = new PrismaClient();
 
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next: NextFunction) => {
   try {
     const { page = '1', limit = '10', category, minPrice, maxPrice, sort } = req.query;
 
@@ -24,8 +25,6 @@ router.get('/', async (req, res) => {
       where.category = category as string;
     }
 
-    // BUG: Price filter sorts alphabetically ("10" < "2")
-    // FIXME: Price should be numeric, not string comparison
     if (minPrice) {
       where.price = { ...where.price, gte: minPrice as string };
     }
@@ -33,10 +32,9 @@ router.get('/', async (req, res) => {
       where.price = { ...where.price, lte: maxPrice as string };
     }
 
-    // BUG: Sort doesn't work properly for price
     let orderBy: any = { createdAt: 'desc' };
     if (sort === 'price_asc') {
-      orderBy = { price: 'asc' }; // FIXME: Sorts alphabetically
+      orderBy = { price: 'asc' };
     } else if (sort === 'price_desc') {
       orderBy = { price: 'desc' };
     }
@@ -58,11 +56,11 @@ router.get('/', async (req, res) => {
       totalPages: Math.ceil(total / limitNum)
     });
   } catch (error: any) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (req, res, next: NextFunction) => {
   try {
     const { id } = req.params;
     const product = await prisma.product.findUnique({
@@ -70,16 +68,16 @@ router.get('/:id', async (req, res) => {
     });
 
     if (!product) {
-      return res.status(404).json({ error: 'Product not found' });
+      throw new NotFoundError('Product not found');
     }
 
     res.json(product);
   } catch (error: any) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 });
 
-router.post('/', authenticate, async (req: AuthRequest, res: Response) => {
+router.post('/', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const { name, description, price, image, stock, category } = req.body;
 
@@ -87,7 +85,7 @@ router.post('/', authenticate, async (req: AuthRequest, res: Response) => {
       data: {
         name,
         description,
-        price: String(price), // BUG: Price stored as string
+        price,
         image, // BUG: Absolute path pointing to localhost
         stock,
         category
@@ -96,11 +94,11 @@ router.post('/', authenticate, async (req: AuthRequest, res: Response) => {
 
     res.status(201).json(product);
   } catch (error: any) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 });
 
-router.put('/:id', authenticate, async (req: AuthRequest, res: Response) => {
+router.put('/:id', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
     const { name, description, price, image, stock, category } = req.body;
@@ -110,7 +108,7 @@ router.put('/:id', authenticate, async (req: AuthRequest, res: Response) => {
       data: {
         name,
         description,
-        price: String(price),
+        price,
         image,
         stock,
         category
@@ -119,11 +117,11 @@ router.put('/:id', authenticate, async (req: AuthRequest, res: Response) => {
 
     res.json(product);
   } catch (error: any) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 });
 
-router.delete('/:id', authenticate, async (req: AuthRequest, res: Response) => {
+router.delete('/:id', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
 
@@ -133,7 +131,7 @@ router.delete('/:id', authenticate, async (req: AuthRequest, res: Response) => {
 
     res.json({ message: 'Product deleted' });
   } catch (error: any) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 });
 

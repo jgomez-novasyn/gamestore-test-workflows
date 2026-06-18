@@ -1,11 +1,12 @@
-import { Router, Response } from 'express';
+import { Router, Response, NextFunction } from 'express';
 import { PrismaClient } from '@prisma/client';
 import { authenticate, AuthRequest } from '../middleware/auth';
+import { NotFoundError, ValidationError } from '../utils/errors';
 
 const router = Router();
 const prisma = new PrismaClient();
 
-router.post('/checkout', authenticate, async (req: AuthRequest, res: Response) => {
+router.post('/checkout', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const { shippingAddress, paymentMethod } = req.body;
     const userId = req.userId;
@@ -20,7 +21,7 @@ router.post('/checkout', authenticate, async (req: AuthRequest, res: Response) =
     });
 
     if (!cart || cart.items.length === 0) {
-      return res.status(400).json({ error: 'Cart is empty' });
+      throw new ValidationError('Cart is empty');
     }
 
     // BUG: No validation that stock is sufficient
@@ -64,11 +65,11 @@ router.post('/checkout', authenticate, async (req: AuthRequest, res: Response) =
 
     res.status(201).json(order);
   } catch (error: any) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 });
 
-router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
+router.get('/', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     // BUG: No order history for user
     // TODO: Return user order history
@@ -84,11 +85,11 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
 
     res.json(orders);
   } catch (error: any) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 });
 
-router.get('/:id', authenticate, async (req: AuthRequest, res: Response) => {
+router.get('/:id', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
     
@@ -102,12 +103,12 @@ router.get('/:id', authenticate, async (req: AuthRequest, res: Response) => {
     });
 
     if (!order) {
-      return res.status(404).json({ error: 'Order not found' });
+      throw new NotFoundError('Order not found');
     }
 
     res.json(order);
   } catch (error: any) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 });
 

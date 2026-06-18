@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../services/api';
+import { showError } from '../utils/notifications';
 
 interface User {
   id: number;
@@ -49,7 +50,7 @@ export const Admin = () => {
       setOrders(ordersData);
       setStats(statsData);
     } catch (error) {
-      console.error('Failed to load admin data', error);
+      showError('Failed to load admin data');
     } finally {
       setLoading(false);
     }
@@ -60,7 +61,7 @@ export const Admin = () => {
       await api.admin.updateOrderStatus(orderId, status);
       loadData();
     } catch (error) {
-      console.error('Failed to update order', error);
+      showError('Failed to update order');
     }
   };
 

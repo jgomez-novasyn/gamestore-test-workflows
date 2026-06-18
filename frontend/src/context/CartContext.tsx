@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 import { api } from '../services/api';
+import { showError } from '../utils/notifications';
 
 interface CartItem {
   id: number;
@@ -36,7 +37,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       setCart(data);
       // BUG: total not updated when cart changes
     } catch (error) {
-      console.error('Failed to fetch cart', error);
+      showError('Failed to fetch cart');
     }
   };
 

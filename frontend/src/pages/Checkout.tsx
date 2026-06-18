@@ -2,6 +2,15 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { api } from '../services/api';
+import { showError, showSuccess } from '../utils/notifications';
+
+const validate = (shippingAddress: string) => {
+  const errors: { shippingAddress?: string } = {};
+  if (!shippingAddress.trim()) {
+    errors.shippingAddress = 'Shipping address is required';
+  }
+  return errors;
+};
 
 export const Checkout = () => {
   const { cart, clearCart } = useCart();
@@ -11,6 +20,7 @@ export const Checkout = () => {
   // BUG: No form validation - just basic state
   const [shippingAddress, setShippingAddress] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('credit_card');
+  const [fieldErrors, setFieldErrors] = useState<{ shippingAddress?: string }>({});
 
   if (!cart || cart.items.length === 0) {
     return (
@@ -27,24 +37,23 @@ export const Checkout = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const errors = validate(shippingAddress);
+    setFieldErrors(errors);
+    if (Object.keys(errors).length > 0) return;
+
     setLoading(true);
 
     try {
       // BUG: No confirmation step - order created immediately
-      const order = await api.orders.checkout({
+      await api.orders.checkout({
         shippingAddress,
         paymentMethod
       });
-
-      if (order.error) {
-        alert(order.error);
-      } else {
-        await clearCart();
-        alert('Order placed successfully!'); // BUG: Should show confirmation
-        navigate('/products');
-      }
+      await clearCart();
+      showSuccess('Order placed successfully!');
+      navigate('/products');
     } catch (error) {
-      alert('Failed to place order');
+      showError('Failed to place order');
     } finally {
       setLoading(false);
     }
@@ -74,13 +83,13 @@ export const Checkout = () => {
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label className="block text-sm font-medium mb-1">Shipping Address</label>
-              {/* BUG: No validation - just a basic textarea */}
               <textarea
                 value={shippingAddress}
-                onChange={e => setShippingAddress(e.target.value)}
-                className="w-full p-2 border rounded"
+                onChange={e => { setShippingAddress(e.target.value); setFieldErrors(prev => ({ ...prev, shippingAddress: undefined })); }}
+                className={`w-full p-2 border rounded ${fieldErrors.shippingAddress ? 'border-red-500' : ''}`}
                 rows={3}
               />
+              {fieldErrors.shippingAddress && <p className="text-red-600 text-sm mt-1">{fieldErrors.shippingAddress}</p>}
             </div>
 
             <div className="mb-4">

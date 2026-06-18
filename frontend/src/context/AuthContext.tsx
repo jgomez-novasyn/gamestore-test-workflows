@@ -26,13 +26,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const token = getToken();
     if (token) {
       api.auth.me()
-        .then(data => {
-          if (!data.error) {
-            setUser(data);
-          } else {
-            clearTokens();
-          }
-        })
+        .then(data => setUser(data))
         .catch(() => clearTokens())
         .finally(() => setLoading(false));
     } else {
@@ -42,22 +36,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = async (email: string, password: string) => {
     const data = await api.auth.login({ email, password });
-    if (data.error) throw new Error(data.error);
     setTokens(data.token, data.refreshToken);
     setUser(data.user);
   };
 
   const register = async (email: string, password: string, name: string) => {
     const data = await api.auth.register({ email, password, name });
-    if (data.error) throw new Error(data.error);
     setTokens(data.token, data.refreshToken);
     setUser(data.user);
   };
 
-  const logout = () => {
-    api.auth.logout();
+  const logout = async () => {
+    try {
+      await api.auth.logout();
+    } catch {
+      // Backend call failed, but still clear local state
+    }
     clearTokens();
     setUser(null);
+    window.location.href = '/login';
   };
 
   return (

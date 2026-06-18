@@ -1,4 +1,4 @@
-import { Router, Response } from 'express';
+import { Router, Response, NextFunction } from 'express';
 import { PrismaClient } from '@prisma/client';
 import { authenticate, AuthRequest } from '../middleware/auth';
 
@@ -9,7 +9,7 @@ router.use(authenticate);
 
 // BUG: No admin role check - any authenticated user can access
 // FIXME: Should check if user.role === 'admin'
-router.get('/users', async (req: AuthRequest, res: Response) => {
+router.get('/users', async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const users = await prisma.user.findMany({
       select: { id: true, email: true, name: true, role: true, createdAt: true }
@@ -17,11 +17,11 @@ router.get('/users', async (req: AuthRequest, res: Response) => {
 
     res.json(users);
   } catch (error: any) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 });
 
-router.get('/orders', async (req: AuthRequest, res: Response) => {
+router.get('/orders', async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const orders = await prisma.order.findMany({
       include: {
@@ -35,11 +35,11 @@ router.get('/orders', async (req: AuthRequest, res: Response) => {
 
     res.json(orders);
   } catch (error: any) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 });
 
-router.put('/orders/:id/status', async (req: AuthRequest, res: Response) => {
+router.put('/orders/:id/status', async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
@@ -51,11 +51,11 @@ router.put('/orders/:id/status', async (req: AuthRequest, res: Response) => {
 
     res.json(order);
   } catch (error: any) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 });
 
-router.get('/stats', async (req: AuthRequest, res: Response) => {
+router.get('/stats', async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const totalUsers = await prisma.user.count();
     const totalOrders = await prisma.order.count();
@@ -72,7 +72,7 @@ router.get('/stats', async (req: AuthRequest, res: Response) => {
       revenue: revenue._sum.total || 0
     });
   } catch (error: any) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 });
 

@@ -24,6 +24,14 @@ const handleUnauthorized = () => {
   window.location.href = '/login';
 };
 
+const checkResponse = async (response: Response) => {
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.error || 'Request failed');
+  }
+  return data;
+};
+
 const fetchWithAuth = async (endpoint: string, options: RequestInit = {}) => {
   const headers: any = {
     'Content-Type': 'application/json',
@@ -57,7 +65,7 @@ const fetchWithAuth = async (endpoint: string, options: RequestInit = {}) => {
     }
   }
 
-  return response;
+  return checkResponse(response);
 };
 
 export const api = {
@@ -68,7 +76,7 @@ export const api = {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       });
-      return response.json();
+      return checkResponse(response);
     },
     login: async (data: any) => {
       const response = await fetch(`${API_URL}/auth/login`, {
@@ -76,40 +84,39 @@ export const api = {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       });
-      return response.json();
+      return checkResponse(response);
     },
-    me: async () => fetchWithAuth('/auth/me').then(r => r.json()),
+    me: async () => fetchWithAuth('/auth/me'),
     logout: async () => {
       await fetchWithAuth('/auth/logout', { method: 'POST' });
-      clearTokens();
     }
   },
   products: {
     getAll: async (params = {}) => {
       const query = new URLSearchParams(params as any).toString();
-      return fetchWithAuth(`/products?${query}`).then(r => r.json());
+      return fetchWithAuth(`/products?${query}`);
     },
-    getById: async (id: number) => fetchWithAuth(`/products/${id}`).then(r => r.json()),
-    create: async (data: any) => fetchWithAuth('/products', { method: 'POST', body: JSON.stringify(data) }).then(r => r.json()),
-    update: async (id: number, data: any) => fetchWithAuth(`/products/${id}`, { method: 'PUT', body: JSON.stringify(data) }).then(r => r.json()),
-    delete: async (id: number) => fetchWithAuth(`/products/${id}`, { method: 'DELETE' }).then(r => r.json())
+    getById: async (id: number) => fetchWithAuth(`/products/${id}`),
+    create: async (data: any) => fetchWithAuth('/products', { method: 'POST', body: JSON.stringify(data) }),
+    update: async (id: number, data: any) => fetchWithAuth(`/products/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+    delete: async (id: number) => fetchWithAuth(`/products/${id}`, { method: 'DELETE' })
   },
   cart: {
-    get: async () => fetchWithAuth('/cart').then(r => r.json()),
-    addItem: async (productId: number, quantity = 1) => fetchWithAuth('/cart/add', { method: 'POST', body: JSON.stringify({ productId, quantity }) }).then(r => r.json()),
-    updateItem: async (itemId: number, quantity: number) => fetchWithAuth(`/cart/item/${itemId}`, { method: 'PUT', body: JSON.stringify({ quantity }) }).then(r => r.json()),
-    removeItem: async (itemId: number) => fetchWithAuth(`/cart/item/${itemId}`, { method: 'DELETE' }).then(r => r.json()),
-    clear: async () => fetchWithAuth('/cart/clear', { method: 'DELETE' }).then(r => r.json())
+    get: async () => fetchWithAuth('/cart'),
+    addItem: async (productId: number, quantity = 1) => fetchWithAuth('/cart/add', { method: 'POST', body: JSON.stringify({ productId, quantity }) }),
+    updateItem: async (itemId: number, quantity: number) => fetchWithAuth(`/cart/item/${itemId}`, { method: 'PUT', body: JSON.stringify({ quantity }) }),
+    removeItem: async (itemId: number) => fetchWithAuth(`/cart/item/${itemId}`, { method: 'DELETE' }),
+    clear: async () => fetchWithAuth('/cart/clear', { method: 'DELETE' })
   },
   orders: {
-    checkout: async (data: any) => fetchWithAuth('/orders/checkout', { method: 'POST', body: JSON.stringify(data) }).then(r => r.json()),
-    getAll: async () => fetchWithAuth('/orders').then(r => r.json()),
-    getById: async (id: number) => fetchWithAuth(`/orders/${id}`).then(r => r.json())
+    checkout: async (data: any) => fetchWithAuth('/orders/checkout', { method: 'POST', body: JSON.stringify(data) }),
+    getAll: async () => fetchWithAuth('/orders'),
+    getById: async (id: number) => fetchWithAuth(`/orders/${id}`)
   },
   admin: {
-    getUsers: async () => fetchWithAuth('/admin/users').then(r => r.json()),
-    getOrders: async () => fetchWithAuth('/admin/orders').then(r => r.json()),
-    updateOrderStatus: async (id: number, status: string) => fetchWithAuth(`/admin/orders/${id}/status`, { method: 'PUT', body: JSON.stringify({ status }) }).then(r => r.json()),
-    getStats: async () => fetchWithAuth('/admin/stats').then(r => r.json())
+    getUsers: async () => fetchWithAuth('/admin/users'),
+    getOrders: async () => fetchWithAuth('/admin/orders'),
+    updateOrderStatus: async (id: number, status: string) => fetchWithAuth(`/admin/orders/${id}/status`, { method: 'PUT', body: JSON.stringify({ status }) }),
+    getStats: async () => fetchWithAuth('/admin/stats')
   }
 };
