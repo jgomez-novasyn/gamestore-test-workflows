@@ -1,14 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../services/api';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import { showError, showSuccess } from '../utils/notifications';
 
 interface Product {
   id: number;
   name: string;
   description: string;
-  price: string;
+  price: number;
   image: string;
   stock: number;
   category: string;
@@ -21,37 +22,41 @@ export const Products = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [category, setCategory] = useState('');
   const [sort, setSort] = useState('');
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
   const { addItem } = useCart();
   const { user } = useAuth();
 
-  useEffect(() => {
-    loadProducts();
-  }, [page, category, sort]);
-
-  const loadProducts = async () => {
+  const loadProducts = useCallback(async () => {
     setLoading(true);
     try {
       const params: any = { page, limit: 10 };
       if (category) params.category = category;
       if (sort) params.sort = sort;
-      
+      if (minPrice) params.minPrice = minPrice;
+      if (maxPrice) params.maxPrice = maxPrice;
+
       const data = await api.products.getAll(params);
       setProducts(data.products || []);
       setTotalPages(data.totalPages || 1);
     } catch (error) {
-      console.error('Failed to load products', error);
+      showError('Failed to load products');
     } finally {
       setLoading(false);
     }
-  };
+  }, [page, category, sort, minPrice, maxPrice]);
+
+  useEffect(() => {
+    loadProducts();
+  }, [loadProducts]);
 
   const handleAddToCart = async (productId: number) => {
     if (!user) {
-      alert('Please login to add items to cart');
+      showError('Please login to add items to cart');
       return;
     }
     await addItem(productId);
-    alert('Added to cart!');
+    showSuccess('Added to cart!');
   };
 
   const categories = ['Adventure', 'Action', 'RPG', 'Shooter', 'Sports', 'Fighting', 'Simulation', 'Strategy', 'Racing', 'Puzzle', 'Platformer', 'Horror'];
@@ -79,6 +84,25 @@ export const Products = () => {
           <option value="price_asc">Price: Low to High</option>
           <option value="price_desc">Price: High to Low</option>
         </select>
+
+        <input
+          type="number"
+          placeholder="Min price"
+          value={minPrice}
+          onChange={e => { setMinPrice(e.target.value); setPage(1); }}
+          className="border p-2 rounded w-28"
+          min="0"
+          step="0.01"
+        />
+        <input
+          type="number"
+          placeholder="Max price"
+          value={maxPrice}
+          onChange={e => { setMaxPrice(e.target.value); setPage(1); }}
+          className="border p-2 rounded w-28"
+          min="0"
+          step="0.01"
+        />
       </div>
 
       {loading ? (
