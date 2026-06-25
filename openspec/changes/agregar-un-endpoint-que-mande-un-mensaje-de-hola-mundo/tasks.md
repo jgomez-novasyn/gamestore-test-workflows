@@ -14,5 +14,5 @@
 
 - [x] 3.1 Validar contra el spec en `specs/hello-world/spec.md`
 - [x] 3.2 Verificar decisiones de diseño en `design.md`
-- [x] 3.3 Asegurar consistencia con propuestas en `proposal.md`
+- [] 3.3 Asegurar consistencia con propuestas en `proposal.md`
 
