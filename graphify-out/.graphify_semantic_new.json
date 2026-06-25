@@ -1,0 +1,554 @@
+{
+  "nodes": [
+    {
+      "id": "gamestore_workshop",
+      "label": "GameStore Workshop",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "gamestore_backend",
+      "label": "GameStore Backend",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "gamestore_frontend",
+      "label": "GameStore Frontend",
+      "file_type": "code",
+      "source_file": "frontend/index.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "openspec_cli",
+      "label": "OpenSpec CLI",
+      "file_type": "document",
+      "source_file": "openspec/config.yaml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "auth_specification",
+      "label": "Auth Specification",
+      "file_type": "document",
+      "source_file": "openspec/specs/auth/spec.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "catalog_specification",
+      "label": "Catalog Specification",
+      "file_type": "document",
+      "source_file": "openspec/specs/catalog/spec.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "fix_session_timeout",
+      "label": "fix-session-timeout",
+      "file_type": "document",
+      "source_file": "session02.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "opsx_propose",
+      "label": "/opsx:propose",
+      "file_type": "document",
+      "source_file": ".opencode/commands/opsx-propose.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "opsx_apply",
+      "label": "/opsx:apply",
+      "file_type": "document",
+      "source_file": ".opencode/commands/opsx-apply.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "opsx_archive",
+      "label": "/opsx:archive",
+      "file_type": "document",
+      "source_file": ".opencode/commands/opsx-archive.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "opsx_explore",
+      "label": "/opsx:explore",
+      "file_type": "document",
+      "source_file": ".opencode/commands/opsx-explore.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "opsx_sync",
+      "label": "/opsx:sync",
+      "file_type": "document",
+      "source_file": ".opencode/commands/opsx-sync.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "session01_setup",
+      "label": "Session 01: Setup & Initial Docs",
+      "file_type": "document",
+      "source_file": "session01.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "session02_first_change",
+      "label": "Session 02: Basic Commands & First Change",
+      "file_type": "document",
+      "source_file": "session02.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "session03_implementation",
+      "label": "Session 03: Implementation with /opsx:apply",
+      "file_type": "document",
+      "source_file": "session03.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "session04_archive",
+      "label": "Session 04: Finalization & Archive",
+      "file_type": "document",
+      "source_file": "session04.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "session05_exploration",
+      "label": "Session 05: Exploration with /opsx:explore",
+      "file_type": "document",
+      "source_file": "session05.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "intentional_bugs",
+      "label": "Intentional Bugs",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "spec_driven_workflow",
+      "label": "Spec-Driven Workflow",
+      "file_type": "document",
+      "source_file": "openspec/config.yaml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "pagination_bug",
+      "label": "Pagination Bug",
+      "file_type": "document",
+      "source_file": "session05.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "agent_guide",
+      "label": "Agent Guide",
+      "file_type": "document",
+      "source_file": "AGENTS.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "session01_setup",
+      "target": "openspec_cli",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "session01.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "session01_setup",
+      "target": "auth_specification",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "session01.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "session01_setup",
+      "target": "catalog_specification",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "session01.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "session02_first_change",
+      "target": "openspec_cli",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "session02.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "session02_first_change",
+      "target": "fix_session_timeout",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "session02.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "session03_implementation",
+      "target": "fix_session_timeout",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "session03.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "session03_implementation",
+      "target": "opsx_apply",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "session03.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "session04_archive",
+      "target": "fix_session_timeout",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "session04.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "session04_archive",
+      "target": "opsx_archive",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "session04.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "session05_exploration",
+      "target": "opsx_explore",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "session05.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "session05_exploration",
+      "target": "catalog_specification",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "session05.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "session05_exploration",
+      "target": "pagination_bug",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "session05.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "auth_specification",
+      "target": "intentional_bugs",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "openspec/specs/auth/spec.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "catalog_specification",
+      "target": "intentional_bugs",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "openspec/specs/catalog/spec.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "agent_guide",
+      "target": "gamestore_workshop",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "agent_guide",
+      "target": "intentional_bugs",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "agent_guide",
+      "target": "gamestore_backend",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "agent_guide",
+      "target": "gamestore_frontend",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "fix_session_timeout",
+      "target": "auth_specification",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "session02.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "gamestore_workshop",
+      "target": "gamestore_backend",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "gamestore_workshop",
+      "target": "gamestore_frontend",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "auth_specification",
+      "target": "catalog_specification",
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.7,
+      "source_file": "session01.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "opsx_propose",
+      "target": "spec_driven_workflow",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": ".opencode/commands/opsx-propose.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "opsx_apply",
+      "target": "spec_driven_workflow",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": ".opencode/commands/opsx-apply.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "opsx_archive",
+      "target": "spec_driven_workflow",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": ".opencode/commands/opsx-archive.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "opsx_explore",
+      "target": "spec_driven_workflow",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": ".opencode/commands/opsx-explore.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "opsx_sync",
+      "target": "spec_driven_workflow",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": ".opencode/commands/opsx-sync.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "workshop_curriculum",
+      "label": "Workshop Curriculum Progression",
+      "nodes": [
+        "session01_setup",
+        "session02_first_change",
+        "session03_implementation",
+        "session04_archive",
+        "session05_exploration"
+      ],
+      "relation": "form",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "session01.md"
+    },
+    {
+      "id": "openspec_change_lifecycle",
+      "label": "OpenSpec Change Lifecycle",
+      "nodes": [
+        "opsx_propose",
+        "opsx_apply",
+        "opsx_archive",
+        "spec_driven_workflow"
+      ],
+      "relation": "implement",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": ".opencode/commands/opsx-propose.md"
+    },
+    {
+      "id": "session_bug_investigation",
+      "label": "Session 05 Bug Investigation Flow",
+      "nodes": [
+        "session05_exploration",
+        "pagination_bug",
+        "catalog_specification",
+        "opsx_explore"
+      ],
+      "relation": "participate_in",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "session05.md"
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

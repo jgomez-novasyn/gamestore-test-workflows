@@ -1,22 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-const validate = (name: string, email: string, password: string) => {
-  const errors: { name?: string; email?: string; password?: string } = {};
-  if (!name.trim()) {
-    errors.name = 'Name is required';
-  }
-  if (!EMAIL_REGEX.test(email)) {
-    errors.email = 'Please enter a valid email address';
-  }
-  if (password.length < 6) {
-    errors.password = 'Password must be at least 6 characters';
-  }
-  return errors;
-};
+import { validateRegister as validate } from '../utils/validation';
 
 export const Register = () => {
   const [email, setEmail] = useState('');

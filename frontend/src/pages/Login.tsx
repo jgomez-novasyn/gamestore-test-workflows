@@ -1,19 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-const validate = (email: string, password: string) => {
-  const errors: { email?: string; password?: string } = {};
-  if (!EMAIL_REGEX.test(email)) {
-    errors.email = 'Please enter a valid email address';
-  }
-  if (!password) {
-    errors.password = 'Password is required';
-  }
-  return errors;
-};
+import { validateLogin as validate } from '../utils/validation';
 
 export const Login = () => {
   const [email, setEmail] = useState('');

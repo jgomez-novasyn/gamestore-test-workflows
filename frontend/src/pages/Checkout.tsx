@@ -3,14 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { api } from '../services/api';
 import { showError, showSuccess } from '../utils/notifications';
-
-const validate = (shippingAddress: string) => {
-  const errors: { shippingAddress?: string } = {};
-  if (!shippingAddress.trim()) {
-    errors.shippingAddress = 'Shipping address is required';
-  }
-  return errors;
-};
+import { validateCheckout as validate } from '../utils/validation';
 
 export const Checkout = () => {
   const { cart, clearCart } = useCart();
